@@ -15,15 +15,45 @@ export default class IdeaList {
 		this._validTags.add('business');
 	}
 
+	addEventListeners = () => {
+		this._ideaListEl.addEventListener('click', (e) => {
+			// console.log(e.target);
+			if (e.target.classList.contains('fa-times')) {
+				e.stopImmediatePropagation();
+				const ideaId = e.target.parentElement.parentElement.dataset.id;
+				this.deleteIdea(ideaId);
+			}
+		});
+	};
+
 	getIdeas = async () => {
 		try {
 			const res = await IdeasApi.getIdeas();
 			this._ideas = res.data.data;
-			console.log(this._ideas);
+			// console.log(this._ideas);
 			this.render();
 		} catch (err) {
 			console.log(err);
 		}
+	};
+
+	deleteIdea = async (id) => {
+		// console.log(id);
+		try {
+			// delete from server
+			const res = await IdeasApi.deleteIdea(id);
+			//delete from dom
+			this._ideas.filter((idea) => idea._id !== id);
+
+			this.getIdeas();
+		} catch (error) {
+			alert('you can not delete this resource');
+		}
+	};
+
+	addIdeaToList = (idea) => {
+		this._ideas.push(idea);
+		this.render();
 	};
 
 	getTagClass = (tag) => {
@@ -42,8 +72,12 @@ export default class IdeaList {
 		this._ideaListEl.innerHTML = this._ideas
 			.map((idea) => {
 				const tagClass = this.getTagClass(idea.tag);
-				return `<div class="card">
-            <button class="delete"><i class="fas fa-times"></i></button>
+				const deleteButton =
+					idea.username === localStorage.getItem('username')
+						? '<button class="delete"><i class="fas fa-times"></i></button>'
+						: '';
+				return `<div data-id=${idea._id} class="card">
+            ${deleteButton}
             <h3>
                 ${idea.text}
             </h3>
@@ -55,5 +89,6 @@ export default class IdeaList {
         </div>`;
 			})
 			.join('');
+		this.addEventListeners();
 	};
 }

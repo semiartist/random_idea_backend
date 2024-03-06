@@ -12,7 +12,7 @@ export default class Modal {
 	};
 
 	open = () => {
-		console.log('clicked');
+		// console.log('clicked');
 		this._modal.style.display = 'block';
 	};
 
@@ -24,7 +24,7 @@ export default class Modal {
 		if (e.target === modal) {
 			this.close();
 		}
-		console.log(e);
+		// console.log(e);
 		// close();
 	};
 }

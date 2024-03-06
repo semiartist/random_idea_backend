@@ -31,6 +31,7 @@ app.use(
 
 app.get('/', (req, res) => {
 	res.send('hello world');
+	console.log(req.body);
 });
 
 const ideasRouter = require('./routes/ideas');
