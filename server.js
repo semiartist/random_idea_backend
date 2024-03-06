@@ -20,7 +20,11 @@ app.use(express.urlencoded({ extended: false }));
 //cors middle ware
 app.use(
 	cors({
-		origin: ['http://localhost:5000', 'http://localhost:3000'],
+		origin: [
+			'http://localhost:5000',
+			'http://localhost:3000',
+			process.env.ENDPOINT,
+		],
 		credentials: true,
 	}),
 );
