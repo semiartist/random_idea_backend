@@ -1,3 +1,4 @@
+const path = require('path');
 const express = require('express');
 require('dotenv').config();
 const port = process.env.PORT || 5000;
@@ -7,6 +8,9 @@ const connectDB = require('./config/db');
 connectDB();
 
 const app = express();
+
+//Static folder
+app.use(express.static(path.join(__dirname, 'public')));
 
 // boey parser middle
 app.use(express.json());
